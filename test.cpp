@@ -7,21 +7,25 @@ int main(){
 	Matrix3f a;
 	Matrix3f b;
 	
-	b.set(0, 0, 0);
-	b.set(0, 1, 0);
-	b.set(0, 2, 2);
+	b.set(0, 0, 1);
+	b.set(0, 1, 1);
+	b.set(0, 2, 1);
 	
-	b.set(1, 0, 2);
-	b.set(1, 1, 0);
-	b.set(1, 2, 2);
+	b.set(1, 0, 1);
+	b.set(1, 1, 1);
+	b.set(1, 2, -1);
 	
-	b.set(2, 0, 2);
-	b.set(2, 1, 0);
-	b.set(2, 2, 2);
+	b.set(2, 0, 1);
+	b.set(2, 1, -1);
+	b.set(2, 2, 1);
+	
+	b.get_eigenvektors();
 	
 	cout << b << '\n';
 	
 	cout << b.get_inverse() << '\n';
+	
+	b.get_eigenvektors();
 	
 	/*
 	a.set(0, 0, 1);

@@ -29,6 +29,49 @@ void Matrix3f::add_row(int x, int y, float c){
 	}
 }
 
+void Matrix3f::get_eigenvektors(){
+	float eig[3];
+	float p = a[0][1] * a[0][1] + a[0][2] * a[0][2] + a[1][2] * a[1][2];
+	float q, r, phi;
+	Matrix3f B; Matrix3f I;
+	for (int i = 0; i < 3; i++) I.set(i, i, 1);
+	
+	if ( p == 0 ){
+		eig[0] = a[0][0];
+		eig[1] = a[1][1];
+		eig[2] = a[2][2];
+	}
+	else {
+		q = a[0][0] + a[1][1] + a[2][2];
+		p = (a[0][0] - q) * (a[0][0] - q) + 
+			(a[1][1] - q) * (a[1][1] - q) + 
+			(a[2][2] - q) * (a[2][2] - q) + 2 * q;
+		p = sqrt( p / 6 );
+		
+		B = ((*this) - I * q);
+		B = B * (1 / p);
+		r = B.get_det();
+		
+		if (r <= -1)
+			phi = M_PI / 3;
+		else if (r >= 1)
+			phi = 0;
+		else
+			phi = acos(r) / 3;
+		
+		eig[0] = q + 2 * p * cos(phi);
+		eig[2] = q + 2 * p * cos(phi + M_PI * (2/3));
+		eig[1] = 3 * q - eig[0] - eig[2]; 
+	}
+	
+	std::cout << eig[0] << ' ' << eig[1] << ' ' << eig[2] << ' ';
+}
+
+float Matrix3f::get_det(){
+	return	a[0][0] * a[1][1] * a[2][2] + a[0][1] * a[1][2] * a[2][0] + a[0][2] * a[1][0] * a[2][1] - 
+			a[0][2] * a[1][1] * a[2][0] - a[0][1] * a[1][0] * a[2][2] - a[0][0] * a[1][2] * a[2][1];
+}
+
 Matrix3f Matrix3f::get_inverse(){
 	Matrix3f temp = (*this) , inverse;
 	for (int i = 0; i < 3; i++) inverse.set(i, i, 1);
@@ -81,6 +124,7 @@ Matrix3f Matrix3f::get_inverse(){
 	return inverse;
 }
 
+
 Matrix3f Matrix3f::operator= (Matrix3f param){
 	Matrix3f temp;
 	for(int i = 0; i < 3; i++){
@@ -111,7 +155,7 @@ Matrix3f Matrix3f::operator- (Matrix3f param){
 	
 	return temp;
 }
-Matrix3f Matrix3f::operator* (int param){
+Matrix3f Matrix3f::operator* (float param){
 	Matrix3f temp;
 	for(int i = 0; i < 3; i++){
 		for(int j = 0; j < 3; j++){

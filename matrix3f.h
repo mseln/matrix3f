@@ -3,7 +3,7 @@
 #define VEC3F_H_INCLUDED
 
 #include <iostream>
-
+#include <cmath>
 
 class Matrix3f{
 	friend std::ostream& operator<< ( std::ostream& os, Matrix3f fb );
@@ -28,12 +28,14 @@ public:
 	void add_row(int x, int y, float c);
 	
 	Matrix3f get_inverse();
+	float get_det();
+	void get_eigenvektors();
 	
 	Matrix3f operator=  (Matrix3f);
 	Matrix3f operator+  (Matrix3f);
 	Matrix3f operator-  (Matrix3f);
 	Matrix3f operator*  (Matrix3f);
-	Matrix3f operator*  (int);
+	Matrix3f operator*  (float);
 };
 
 #endif
