@@ -29,6 +29,58 @@ void Matrix3f::add_row(int x, int y, float c){
 	}
 }
 
+Matrix3f Matrix3f::get_inverse(){
+	Matrix3f temp = (*this) , inverse;
+	for (int i = 0; i < 3; i++) inverse.set(i, i, 1);
+	
+	for (int i = 0; i < 3; i++){
+		if(temp.get(i, i) == 0){
+			for (int j = i; j < 3; j++){
+				if(temp.get(j, i) != 0){
+					temp.chg_row(i, j);
+					inverse.chg_row(i, j);
+					
+					std::cout << "Change row " << i << " and " << j << ".\n";
+					std::cout << temp << '\n';
+					std::cout << inverse << '\n';
+					
+					break;
+				}
+			}
+			
+			if(temp.get(i, i) == 0){ 
+				std::cout << "Singularity!\n";
+				break;
+			}
+		}
+		
+		
+		float mult_val = temp.get(i, i);
+		temp.mult_row(i, 1 / mult_val );
+		inverse.mult_row(i, 1 / mult_val );
+		
+		std::cout << "Divide row " << i << " by " << mult_val << ".\n";
+		std::cout << temp << '\n';
+		std::cout << inverse << '\n';
+		
+		for (int j = 0; j < 3; j++){
+			if(i != j){
+				
+				float mult_val = -temp.get(j, i);
+				
+				temp.add_row(j, i, mult_val);
+				inverse.add_row(j, i, mult_val);
+				
+				std::cout << "Multiply row " << i << " by " << mult_val << " and adding it to " << j << ".\n";
+				std::cout << temp << '\n';
+				std::cout << inverse << '\n';
+			}
+		}
+	}
+	
+	return inverse;
+}
+
 Matrix3f Matrix3f::operator= (Matrix3f param){
 	Matrix3f temp;
 	for(int i = 0; i < 3; i++){

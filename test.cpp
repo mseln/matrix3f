@@ -7,20 +7,23 @@ int main(){
 	Matrix3f a;
 	Matrix3f b;
 	
-	b.set(0, 0, 1);
-	b.set(0, 1, 2);
-	b.set(0, 2, 3);
+	b.set(0, 0, 0);
+	b.set(0, 1, 0);
+	b.set(0, 2, 2);
 	
-	b.set(1, 0, 4);
-	b.set(1, 1, 5);
-	b.set(1, 2, 6);
+	b.set(1, 0, 2);
+	b.set(1, 1, 0);
+	b.set(1, 2, 2);
 	
-	b.set(2, 0, 7);
-	b.set(2, 1, 8);
-	b.set(2, 2, 9);
+	b.set(2, 0, 2);
+	b.set(2, 1, 0);
+	b.set(2, 2, 2);
 	
+	cout << b << '\n';
 	
-
+	cout << b.get_inverse() << '\n';
+	
+	/*
 	a.set(0, 0, 1);
 	a.set(0, 1, 2);
 	a.set(0, 2, 3);
@@ -43,7 +46,7 @@ int main(){
 	c.add_row(0, 2, 4);
 	cout << c;
 	
-	
+	*/
 	
 	return 0;
 }
