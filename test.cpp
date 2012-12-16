@@ -21,11 +21,8 @@ int main(){
 	
 	b.get_eigenvektors();
 	
-	cout << b << '\n';
-	
-	cout << b.get_inverse() << '\n';
-	
-	b.get_eigenvektors();
+	// cout << b << '\n';
+	// cout << b.get_inverse() << '\n';
 	
 	/*
 	a.set(0, 0, 1);

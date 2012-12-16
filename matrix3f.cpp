@@ -42,7 +42,7 @@ void Matrix3f::get_eigenvektors(){
 		eig[2] = a[2][2];
 	}
 	else {
-		q = a[0][0] + a[1][1] + a[2][2];
+		q = (a[0][0] + a[1][1] + a[2][2]) / 3;
 		p = (a[0][0] - q) * (a[0][0] - q) + 
 			(a[1][1] - q) * (a[1][1] - q) + 
 			(a[2][2] - q) * (a[2][2] - q) + 2 * q;
@@ -65,11 +65,60 @@ void Matrix3f::get_eigenvektors(){
 	}
 	
 	std::cout << eig[0] << ' ' << eig[1] << ' ' << eig[2] << ' ';
+	
+	for (int i = 0; i < 3; i++) {
+		Matrix3f temp = (*this);
+		
+		temp.set(0, 0, temp.get(0, 0) - eig[i]);
+		temp.set(1, 1, temp.get(1, 1) - eig[i]);
+		temp.set(2, 2, temp.get(2, 2) - eig[i]);
+		temp = temp.gauss();
+		
+		std::cout << "Temp " << i << ":\n" << temp << "\n";
+	}
 }
 
 float Matrix3f::get_det(){
 	return	a[0][0] * a[1][1] * a[2][2] + a[0][1] * a[1][2] * a[2][0] + a[0][2] * a[1][0] * a[2][1] - 
 			a[0][2] * a[1][1] * a[2][0] - a[0][1] * a[1][0] * a[2][2] - a[0][0] * a[1][2] * a[2][1];
+}
+
+
+Matrix3f Matrix3f::gauss(){
+	Matrix3f * temp = new Matrix3f;
+	temp = this;
+	
+	for (int i = 0; i < 3; i++){
+		if(temp->get(i, i) == 0){
+			for (int j = i; j < 3; j++){
+				if(temp->get(j, i) != 0){
+					temp->chg_row(i, j);
+					break;
+				}
+			}
+			
+			if(temp->get(i, i) == 0){ 
+				std::cout << "Parameter solotion!!\n";
+				break;
+			}
+		}
+		
+		
+		float mult_val = temp->get(i, i);
+		temp->mult_row(i, 1 / mult_val );
+
+		for (int j = 0; j < 3; j++){
+			if(i != j){
+				float mult_val = -temp->get(j, i);
+				temp->add_row(j, i, mult_val);
+			}
+		}
+	}
+	
+	std::cout << "Temp " << ":\n" << *temp << "\n";
+	std::cout << "This " << ":\n" << *this << "\n";
+	
+	return *temp;
 }
 
 Matrix3f Matrix3f::get_inverse(){

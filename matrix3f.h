@@ -27,7 +27,10 @@ public:
 	void mult_row(int x,float c);
 	void add_row(int x, int y, float c);
 	
+	
+	Matrix3f gauss();
 	Matrix3f get_inverse();
+	
 	float get_det();
 	void get_eigenvektors();
 	
